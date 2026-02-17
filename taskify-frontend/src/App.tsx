@@ -9,26 +9,41 @@ function App() {
   const tasks = useTaskStore((state) => state.tasks);
   const theme = useTaskStore((state) => state.theme);
   const setTheme = useTaskStore((state) => state.setTheme);
+
   const completedTasks = tasks.filter((t) => t.completed).length;
 
-  // Apply theme on mount and when it changes
+  // Apply theme whenever theme changes
   useEffect(() => {
     applyTheme(theme);
-  }, [theme]);
+  }, [theme]); // ✅ correct dependency
 
   // Check system preference on first load
   useEffect(() => {
-    const savedTheme = localStorage.getItem('taskify-theme') as 'light' | 'dark' | 'auto' | null;
+    const savedTheme = localStorage.getItem(
+      'taskify-theme'
+    ) as 'light' | 'dark' | 'auto' | null;
+
     if (!savedTheme) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+
       setTheme(prefersDark ? 'dark' : 'light');
     }
-  }, []);
+  }, []); 
+  // ✅ empty dependency array because:
+  // setTheme from Zustand is stable and doesn't need to be included
 
   const handleThemeToggle = () => {
-    const themes: Array<'light' | 'dark' | 'auto'> = ['light', 'dark', 'auto'];
+    const themes: Array<'light' | 'dark' | 'auto'> = [
+      'light',
+      'dark',
+      'auto',
+    ];
+
     const currentIndex = themes.indexOf(theme);
     const nextTheme = themes[(currentIndex + 1) % themes.length];
+
     setTheme(nextTheme);
   };
 
@@ -47,32 +62,36 @@ function App() {
             <div className="app-logo">✨</div>
             <div>
               <h1 className="app-title">Taskify</h1>
-              <p className="app-subtitle">Stay productive, stay organized</p>
+              <p className="app-subtitle">
+                Stay productive, stay organized
+              </p>
             </div>
           </div>
+
           <div className="header-right">
             <div className="header-stats">
               <span className="stat-badge">
                 {completedTasks}/{tasks.length} Done
               </span>
             </div>
-            {/* Theme Toggle Button */}
+
             <button
               className="btn-theme"
               onClick={handleThemeToggle}
               title={`Theme: ${theme} (click to cycle)`}
               aria-label="Toggle theme"
             >
-              <span className="theme-icon">{getThemeIcon()}</span>
+              <span className="theme-icon">
+                {getThemeIcon()}
+              </span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main */}
       <main className="app-main">
         <div className="container">
-          {/* Hero Section */}
           <section className="hero-section">
             <h2 className="section-title">
               What's on your mind?
@@ -82,13 +101,8 @@ function App() {
             </p>
           </section>
 
-          {/* Add Task Form */}
           <AddTaskForm />
-
-          {/* Filters */}
           <TaskFilters />
-
-          {/* Task List */}
           <TaskList />
         </div>
       </main>
@@ -96,7 +110,7 @@ function App() {
       {/* Footer */}
       <footer className="app-footer">
         <p>
-          Made with ❤️ • Taskify v2.0 • {new Date().getFullYear()}
+          • Taskify v2.0 • {new Date().getFullYear()}
         </p>
       </footer>
     </div>
