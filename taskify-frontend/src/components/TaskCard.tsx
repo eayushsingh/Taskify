@@ -5,6 +5,12 @@ import EditTaskModal from './EditTaskModal';
 
 interface TaskCardProps {
   task: Task;
+  isDragging?: boolean;
+  onDragStart?: (e: React.DragEvent) => void;
+  onDragEnd?: (e: React.DragEvent) => void;
+  onDragOver?: (e: React.DragEvent) => void;
+  onDragLeave?: (e: React.DragEvent) => void;
+  onDrop?: (e: React.DragEvent) => void;
 }
 
 const getPriorityColor = (priority: string): string => {
@@ -31,23 +37,42 @@ const formatDate = (dateString?: string): string => {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
-export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+export const TaskCard: React.FC<TaskCardProps> = ({
+  task,
+  isDragging = false,
+  onDragStart,
+  onDragEnd,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+}) => {
   const { toggleTask, deleteTask } = useTaskStore();
   const [editOpen, setEditOpen] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
 
-  const isOverdue = 
-    task.dueDate && 
-    !task.completed && 
+  const isOverdue =
+    task.dueDate &&
+    !task.completed &&
     new Date(task.dueDate) < new Date();
 
-  const isToday = 
-    task.dueDate && 
+  const isToday =
+    task.dueDate &&
     new Date(task.dueDate).toDateString() === new Date().toDateString();
 
   return (
     <>
-      <div className={`task-card ${task.completed ? 'completed' : ''}`}>
+      <div
+        className={`task-card ${task.completed ? 'completed' : ''} ${isDragging ? 'dragging' : ''}`}
+        draggable
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+      >
+        {/* Drag Handle */}
+        <div className="drag-handle" title="Drag to reorder">
+          ⋮⋮</div>
+
         <div className="task-card-content">
           {/* Checkbox */}
           <div className="task-checkbox-wrapper">
@@ -61,7 +86,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
           </div>
 
           {/* Task Main Content */}
-          <div className="task-info" onClick={() => setShowDetails(!showDetails)}>
+          <div className="task-info">
             <h3 className="task-title">
               {task.title}
             </h3>
@@ -72,9 +97,9 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
             {/* Task Metadata */}
             <div className="task-metadata">
               {/* Priority Badge */}
-              <span 
-                className="badge priority-badge" 
-                style={{ 
+              <span
+                className="badge priority-badge"
+                style={{
                   backgroundColor: `${getPriorityColor(task.priority)}15`,
                   color: getPriorityColor(task.priority),
                   borderColor: getPriorityColor(task.priority)
@@ -85,7 +110,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
 
               {/* Due Date */}
               {task.dueDate && (
-                <span 
+                <span
                   className={`badge due-date-badge ${isOverdue ? 'overdue' : isToday ? 'today' : ''}`}
                 >
                   📅 {formatDate(task.dueDate)}
@@ -130,8 +155,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         </div>
 
         {/* Visual Priority Indicator */}
-        <div 
-          className="priority-indicator" 
+        <div
+          className="priority-indicator"
           style={{ backgroundColor: getPriorityColor(task.priority) }}
         ></div>
       </div>
