@@ -74,6 +74,7 @@ export const TaskFilters: React.FC = () => {
             <option value="date">📅 Most Recent</option>
             <option value="priority">🎯 Priority</option>
             <option value="title">🔤 Title (A-Z)</option>
+            <option value="manual">↕️ Drag to Reorder</option>
           </select>
         </div>
       </div>
@@ -109,6 +110,13 @@ export const TaskFilters: React.FC = () => {
         <div className="results-info">
           Showing <strong>{filteredTasks.length}</strong> of{' '}
           <strong>{totalTasks}</strong> tasks
+        </div>
+      )}
+
+      {/* Drag & Drop Hint */}
+      {sortBy === 'manual' && (
+        <div className="drag-hint">
+          💡 Drag and drop tasks to reorder them
         </div>
       )}
     </div>

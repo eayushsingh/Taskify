@@ -1,4 +1,4 @@
-/* Task Filters Styles */
+/* Enhanced Task Filters Styles */
 
 .filters-container {
   background: var(--glass-bg);
@@ -9,6 +9,7 @@
   margin-bottom: 24px;
   box-shadow: var(--shadow-sm);
   animation: slideDown 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s backwards;
+  transition: all 0.3s ease;
 }
 
 @keyframes slideDown {
@@ -233,6 +234,30 @@
 .results-info strong {
   color: var(--primary);
   font-weight: 600;
+}
+
+/* Drag Hint */
+.drag-hint {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive */

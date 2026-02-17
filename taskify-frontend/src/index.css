@@ -1,7 +1,7 @@
-/* Global Styles - Modern Minimalist with Glassmorphism */
+/* Enhanced Global Styles with Dark/Light Theme */
 
 :root {
-  /* Color Palette */
+  /* Light Theme Colors */
   --primary: #6366f1;
   --primary-dark: #4f46e5;
   --primary-light: #818cf8;
@@ -10,34 +10,78 @@
   --success: #10b981;
   --danger: #ef4444;
   --warning: #f59e0b;
-  
-  /* Backgrounds */
+
+  /* Light Theme Backgrounds */
   --bg-primary: #ffffff;
   --bg-secondary: #f8fafc;
   --bg-tertiary: #f1f5f9;
-  --bg-dark: #0f172a;
-  
-  /* Text */
+  --bg-hover: #f3f4f6;
+
+  /* Light Theme Text */
   --text-primary: #0f172a;
   --text-secondary: #64748b;
   --text-tertiary: #94a3b8;
   --text-inverse: #ffffff;
-  
-  /* Borders */
+
+  /* Light Theme Borders */
   --border-color: #e2e8f0;
   --border-color-light: #f1f5f9;
-  
+
   /* Shadows */
   --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
   --shadow-sm: 0 1px 3px 0 rgba(15, 23, 42, 0.1), 0 1px 2px 0 rgba(15, 23, 42, 0.06);
   --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -1px rgba(15, 23, 42, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
-  
+
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.18);
   --glass-blur: 12px;
+
+  /* Drag & Drop */
+  --drag-overlay: rgba(99, 102, 241, 0.1);
+}
+
+/* Dark Theme */
+html[data-theme="dark"] {
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --primary-light: #a5b4fc;
+  --secondary: #f472b6;
+  --accent: #fbbf24;
+  --success: #34d399;
+  --danger: #f87171;
+  --warning: #fbbf24;
+
+  /* Dark Theme Backgrounds */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-hover: #1e293b;
+
+  /* Dark Theme Text */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-inverse: #0f172a;
+
+  /* Dark Theme Borders */
+  --border-color: #334155;
+  --border-color-light: #475569;
+
+  /* Dark Mode Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+
+  /* Dark Glassmorphism */
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Dark Drag & Drop */
+  --drag-overlay: rgba(99, 102, 241, 0.2);
 }
 
 * {
@@ -48,11 +92,12 @@
 
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
   font-family: 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
@@ -66,19 +111,12 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   letter-spacing: -0.5px;
+  color: var(--text-primary);
 }
 
-h1 {
-  font-size: 2.5rem;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.5rem;
-}
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
 
 /* Smooth animations */
 * {
@@ -107,5 +145,32 @@ h3 {
 /* Selection */
 ::selection {
   background: var(--primary);
-  color: white;
+  color: var(--text-inverse);
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Draggable elements */
+[draggable="true"] {
+  cursor: move;
+  user-select: none;
+  -webkit-user-drag: element;
+}
+
+/* Drag over state */
+.drag-over {
+  background: var(--drag-overlay);
+  border-color: var(--primary);
+}
+
+/* Smooth theme transition */
+html {
+  transition: background-color 0.3s ease;
 }
